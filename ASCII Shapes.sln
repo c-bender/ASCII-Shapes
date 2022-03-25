@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASCII Shapes", "ASCII Shapes.csproj", "{010FD21D-E124-441D-9259-740FB54B7435}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{010FD21D-E124-441D-9259-740FB54B7435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{010FD21D-E124-441D-9259-740FB54B7435}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{010FD21D-E124-441D-9259-740FB54B7435}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{010FD21D-E124-441D-9259-740FB54B7435}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D5D13D1-DD85-4830-8F18-44C0517D60A1}
+	EndGlobalSection
+EndGlobal
