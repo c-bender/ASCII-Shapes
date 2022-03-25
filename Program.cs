@@ -5,7 +5,7 @@ using System;
 
 namespace ASCIIShapes
 {
-
+    //parent class for all shape objects
     public abstract class Shape
     {
         const int minHeight = 2;
@@ -21,6 +21,7 @@ namespace ASCIIShapes
 
         private char backgroundCharacter = ' ';
 
+        //enables future addition of user control over print character
         public char PrintCharacter
         {
             get
@@ -29,6 +30,7 @@ namespace ASCIIShapes
             { printCharacter = value; }
         }
 
+        //enables future addition of user control over background character
         public char BackgroundCharacter
         {
             get
@@ -61,11 +63,15 @@ namespace ASCIIShapes
             set { oWidth = value; }
         }
 
+        //two-dimensional array backing field to store the ascii shapes
+        //all shapes created and stored as rectangular arrays of print character and whitespace (background character)
         protected char[,] oArray;
+
 
         public char[,] GetArray
         { get { return oArray; } }
 
+        //generic print method for all shapes
         public void Print()
         {
             for (int i = 0; i < ObjectHeight; i++)
@@ -73,6 +79,9 @@ namespace ASCIIShapes
                 for (int j = 0; j < ObjectWidth; j++)
                 {
                     Console.Write(oArray[i, j]);
+
+                    //console font height is 2x font width, so whitespace needs to be added between every x-coordinate for the aspect ratio
+                    //the acute isoscles triangle doesn't need this whitespace
                     if (this.ShapeName != "ACUTE ISOSCLES TRIANGLE")
                     {
                         Console.Write(' ');
@@ -84,7 +93,7 @@ namespace ASCIIShapes
             }
         }
 
-
+        //get the x-index (column) of the left edge of the shape
         protected int FirstIndexSearch(int rowIndex)
         {
             for (int i = 0; i < ObjectWidth; i++)
@@ -103,7 +112,7 @@ namespace ASCIIShapes
 
         }
 
-
+        //get the x-index (column of the right edge of the shape
         protected int LastIndexSearch(int rowIndex)
         {
             for (int i = ObjectWidth - 1; i > -1; i--)
@@ -122,6 +131,8 @@ namespace ASCIIShapes
 
         }
 
+        //calculate the maximum label length for a given row
+        //labels are precluded from including a perimeter pixel and must be wholly contained within the shape
         public int MaxLabelLength(int row)
         {
             int rowIndex = row - 1;
@@ -131,6 +142,8 @@ namespace ASCIIShapes
             return maxLabel;
         }
 
+        //calculate the maximum label length for a ANY row in the shape
+        //labels are precluded from including a perimeter pixel and must be wholly contained within the shape
         public int GetMaxLabelLength()
         {
             int maxLength = 0;
@@ -146,6 +159,7 @@ namespace ASCIIShapes
             return maxLength;
         }
 
+        //calculate for a given label which rows it could validly be printed within
         public List<string> GetLabelRowOptions(string label)
         {
 
@@ -167,6 +181,7 @@ namespace ASCIIShapes
             return optionsList;
         }
 
+        //functionally a submenu to receive and validate label data from the user
         public void AttachLabelDialogue(string label)
         {
             List<string> optionsList = GetLabelRowOptions(label);
@@ -226,21 +241,7 @@ namespace ASCIIShapes
         }
 
 
-        protected bool LabelSizeCheck(int row, int length)
-        {
-
-            if (length > MaxLabelLength(row))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-
-        }
-
-
+        //replace the print characters in the shape with the characters from the label string
         protected void LabelAssign(int row, string label)
         {
 
@@ -270,7 +271,7 @@ namespace ASCIIShapes
 
 
 
-
+        //built for future functionality to allow shape transformations (mirror, rotate, etc.)
         public void Mirror()
         {
 
@@ -291,6 +292,8 @@ namespace ASCIIShapes
         }
 
 
+        //invert the rows of a shape
+        //used by the Diamond class to construct diamonds out of two triangles
         public void Invert()
         {
             char[,] outputArray = new char[ObjectHeight, ObjectWidth];
@@ -312,10 +315,10 @@ namespace ASCIIShapes
 
     }
 
-
+    //child class for acute isoscles triangles
     public class IsosclesTriangle : Shape
     {
-
+        //index of the midpoint of the triangle
         private int midPointIndex;
 
         public IsosclesTriangle(int height)
@@ -335,12 +338,14 @@ namespace ASCIIShapes
 
         }
 
+        //load the array with the shape
         private void LoadArray()
         {
+            //outer loop steps through rows
             for (int a = 0; a < ObjectHeight; a++)
             {
 
-                //inner loop to write values to array
+                //inner loop steps through columns
                 for (int b = 0; b < ObjectWidth; b++)
                 {
                     if (b >= midPointIndex - a && b <= midPointIndex + a)
@@ -360,6 +365,7 @@ namespace ASCIIShapes
 
     }
 
+    //child class for right triangles
     public class RightTriangle : Shape
     {
 
@@ -378,12 +384,14 @@ namespace ASCIIShapes
 
         }
 
+        //triangle will be left-aligned by default
+        //Mirror() method can be called if right-alignment is needed
         private void LoadArray()
         {
             for (int a = 0; a < ObjectHeight; a++)
             {
 
-                //inner loop to write values to array
+                
                 for (int b = 0; b < ObjectWidth; b++)
                 {
                     if (b <= a)
@@ -404,7 +412,7 @@ namespace ASCIIShapes
 
     }
 
-
+    //child class for rectangles and squares (a square is a rectangle with equal length sides)
     public class Rectangle : Shape
     {
 
@@ -422,6 +430,7 @@ namespace ASCIIShapes
 
         }
 
+        //overloaded method for making squares
         public Rectangle(int height)
         {
             ShapeName = "SQUARE";
@@ -440,8 +449,7 @@ namespace ASCIIShapes
         {
             for (int a = 0; a < ObjectHeight; a++)
             {
-
-                //inner loop to write values to array
+                
                 for (int b = 0; b < ObjectWidth; b++)
                 {
                     oArray[a, b] = PrintCharacter;
@@ -453,10 +461,10 @@ namespace ASCIIShapes
     }
 
 
-
+    //child class for diamond shapes
     public class Diamond : Shape
     {
-
+        //diamonds have to be 3 high or else they're triangles
         private const int minHeight = 3;
 
         public Diamond(int height)
@@ -466,11 +474,9 @@ namespace ASCIIShapes
 
             ObjectHeight = height;
 
-            if (height < minHeight)
-            {
-                throw new ArgumentOutOfRangeException("height");
-            }
-            else if (height % 2 == 0)
+            //if the height is even, two triangles of equal size build it
+            //if the height is odd, one triangle needs to be smaller by 1
+            if (height % 2 == 0)
             {
                 EvenDiamond(height);
             }
@@ -480,6 +486,7 @@ namespace ASCIIShapes
             }
         }
 
+        //build diamonds of even height
         private void EvenDiamond(int height)
         {
 
@@ -493,6 +500,7 @@ namespace ASCIIShapes
 
         }
 
+        //build diamonds of odd height
         private void OddDiamond(int height)
         {
 
@@ -566,27 +574,25 @@ namespace ASCIIShapes
     }
 
 
-
+    //static menu class for the majority of user input, UI logic, and program state
     public static class Menu
     {
-
+        //set of flags that determine which menu to return to after relevant jump statements
         private static bool continueProgram = true;
-
         private static bool continueShapeSubmenu = true;
-
         private static bool continueHeightSubmenu = true;
-
         private static bool continueWidthSubmenu = true;
-
         private static bool continueLabelSubmenu = true;
 
+        //static options to build menu text
         private static string[] shapeOptions = { "Square", "Rectangle", "Triangle", "Diamond" };
-
         private static string[] triOptions = { "Acute Isosles Triangle", "Right Isoscles Triangle" };
 
+        //defaults for height and width inputs to shape object constructors
         private static int dimHeight = 10;
         private static int dimWidth = 10;
 
+        //resets the menu flags after an error is caught and handled
         private static void ResetMenuFlags()
         {
             //reset the menu flags
@@ -597,6 +603,7 @@ namespace ASCIIShapes
             continueLabelSubmenu = true;
         }
 
+        //sets control flags to a state that returns user to main menu after a jump statement
         private static void ReturnToMainMenu()
         {
             continueProgram = true;
@@ -606,7 +613,7 @@ namespace ASCIIShapes
             continueLabelSubmenu = false;
         }
 
-
+        //prints the screen banner for each menu / program state
         public static void ScreenBanner(string bannerText)
         {
             Console.Clear();
@@ -619,6 +626,7 @@ namespace ASCIIShapes
             Console.WriteLine();
         }
 
+        //main menu
         public static void HomeScreen()
         {
 
@@ -655,6 +663,7 @@ namespace ASCIIShapes
 
                 shapeChoice = shapeChoice.ToUpper();
 
+                //using a switch with a default that sets an error flag in order to catch and handle many types of incorrect input
                 switch (shapeChoice)
                 {
                     case "1":
@@ -682,6 +691,7 @@ namespace ASCIIShapes
 
         }
 
+        //submenu for building triangles
         public static void TriangleSubmenu()
         {
 
@@ -740,7 +750,7 @@ namespace ASCIIShapes
 
         }
 
-
+        //submenu for choosing the height of the shape
         public static void HeightSubmenu(string shape)
         {
 
@@ -757,6 +767,7 @@ namespace ASCIIShapes
 
                 ScreenBanner("HEIGHT SELECTION: " + shape);
 
+                //additional logic needed to check the minimum heights of different shapes
                 if ((errorEntry || diamondError) && shape == "DIAMOND")
                 {
                     Console.WriteLine("Invalid input. Please enter a positive integer between 3 and 50 for a diamond shape or a menu option. (Default: 10)");
@@ -774,6 +785,8 @@ namespace ASCIIShapes
                 errorEntry = false;
                 diamondError = false;
                 Console.WriteLine();
+
+                //only show the option to return to the triangle submenu if the user has chosen a triangle
                 if (shape == "ACUTE ISOSCLES TRIANGLE" || shape == "RIGHT ISOSCLES TRIANGLE")
                 {
                     Console.WriteLine("S - Return to Triangle Submenu");
@@ -795,6 +808,7 @@ namespace ASCIIShapes
 
                 heightChoice = heightChoice.ToUpper();
 
+                //only return to the triangle submenu if the user has chosen a triangle
                 if (heightChoice == "S" && (shape == "ACUTE ISOSCLES TRIANGLE" || shape == "RIGHT ISOSCLES TRIANGLE"))
                 {
                     continueHeightSubmenu = false;
@@ -819,6 +833,7 @@ namespace ASCIIShapes
                 }
                 else
                 {
+                    //if user did not chose a menu option, check if they submitted an INT
                     try
                     {
                         dimHeight = Int32.Parse(heightChoice);
@@ -830,6 +845,7 @@ namespace ASCIIShapes
                     }
                 }
 
+                //height "out of range" logic
                 if (shape == "DIAMOND" && (dimHeight < 3 || dimHeight > 50))
                 {
                     diamondError = true;
@@ -842,12 +858,14 @@ namespace ASCIIShapes
                     continue;
                 }
 
+                //if the shape is a rectangle, route through the "Width" submenu first
                 if (shape == "RECTANGLE")
                 {
                     WidthSubmenu(dimHeight);
                 }
                 else
                 {
+                    //build the objects and pass them to the label submenu
                     if (shape == "SQUARE")
                     {
                         Rectangle inputShape = new Rectangle(dimHeight);
@@ -879,7 +897,7 @@ namespace ASCIIShapes
 
         }
 
-
+        //width submenu for rectangles
         private static void WidthSubmenu(int height)
         {
             bool errorEntry = false;
@@ -895,11 +913,11 @@ namespace ASCIIShapes
 
                 if (errorEntry)
                 {
-                    Console.WriteLine("Invalid input. Please enter a positive integer between 2 and 50 or a menu option.");
+                    Console.WriteLine("Invalid input. Please enter a positive integer between 2 and 50 (Default: 20) or a menu option.");
                 }
                 else
                 {
-                    Console.WriteLine("Please choose a width for this shape.");
+                    Console.WriteLine("Please choose a width for this shape (Default: 20).");
 
                 }
 
@@ -928,10 +946,15 @@ namespace ASCIIShapes
                 }
                 else if (widthChoice == "X")
                 {
+                    continueWidthSubmenu= false;
                     continueHeightSubmenu = false;
                     continueShapeSubmenu = false;
                     continueProgram = false;
                     continue;
+                }
+                else if (widthChoice == "")
+                {
+                    dimWidth = 20;
                 }
                 else
                 {
@@ -962,7 +985,7 @@ namespace ASCIIShapes
             }
         }
 
-
+        //submenu for attaching labels; passes control off to methods in the Shape class for final processing
         private static void LabelSubmenu(Shape inputShape)
         {
 
@@ -977,8 +1000,10 @@ namespace ASCIIShapes
 
                 ResetMenuFlags();
 
-                ScreenBanner("LABEL SELECTION: " + inputShape.ShapeName);
+                ScreenBanner("LABEL SELECTION: " + inputShape.ShapeName + " (Height: " + inputShape.ObjectHeight + ")");
                 Console.WriteLine();
+
+                //logic to redirect user after different types of incorrect input
                 if (errorCode == 1)
                 {
                     Console.WriteLine("Invalid input. Do you want to print a custom label on the shape (Default: LU)?");
@@ -1026,6 +1051,8 @@ namespace ASCIIShapes
                 errorCode = 0;
 
                 Console.WriteLine();
+                Console.WriteLine("Y - Yes");
+                Console.WriteLine("N - No");
                 if (inputShape.ShapeName == "RECTANGLE")
                 {
                     Console.WriteLine("W - Return to Width Menu");
@@ -1144,7 +1171,7 @@ namespace ASCIIShapes
             static void Main(string[] args)
             {
 
-
+                //everything branches off of the HomeScreen method
                 Menu.HomeScreen();
 
 
