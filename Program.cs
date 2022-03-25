@@ -1,4 +1,6 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿//  Author: C.Bender
+// Project: ASCII Shapes Problem
+//Comments: Incorporated all problem requirements and added several additional features and UI elements.
 
 
 using System;
