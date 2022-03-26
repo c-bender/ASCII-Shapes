@@ -1046,7 +1046,7 @@ namespace ASCIIShapes
                 }
                 else
                 {
-                    Console.WriteLine("Do you want to print a custom label on the shape?");
+                    Console.WriteLine("Do you want to print a custom label on the shape (Default: LU)?");
                 }
                 
 
