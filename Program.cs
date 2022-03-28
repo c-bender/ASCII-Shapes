@@ -793,7 +793,7 @@ namespace ASCIIShapes
                 //only show the option to return to the triangle submenu if the user has chosen a triangle
                 if (shape == "ACUTE ISOSCLES TRIANGLE" || shape == "RIGHT ISOSCLES TRIANGLE")
                 {
-                    Console.WriteLine("S - Return to Triangle Submenu");
+                    Console.WriteLine("T - Return to Triangle Submenu");
                 }
                 Console.WriteLine("M - Return to Main Menu");
                 Console.WriteLine("X - Exit Program");
@@ -813,7 +813,7 @@ namespace ASCIIShapes
                 heightChoice = heightChoice.ToUpper();
 
                 //only return to the triangle submenu if the user has chosen a triangle
-                if (heightChoice == "S" && (shape == "ACUTE ISOSCLES TRIANGLE" || shape == "RIGHT ISOSCLES TRIANGLE"))
+                if (heightChoice == "T" && (shape == "ACUTE ISOSCLES TRIANGLE" || shape == "RIGHT ISOSCLES TRIANGLE"))
                 {
                     continueHeightSubmenu = false;
                     continue;
