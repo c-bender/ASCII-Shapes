@@ -760,6 +760,8 @@ namespace ASCIIShapes
             bool diamondError = false;
             string heightChoice = "";
 
+            
+
             shape = shape.ToUpper();
 
             while (continueHeightSubmenu)
@@ -831,7 +833,7 @@ namespace ASCIIShapes
                 }
                 else if (heightChoice == "")
                 {
-                    heightChoice = "10";
+                    dimHeight = 10;
                 }
                 else
                 {
@@ -1002,7 +1004,7 @@ namespace ASCIIShapes
 
                 ResetMenuFlags();
 
-                ScreenBanner("LABEL SELECTION: " + inputShape.ShapeName + " (Height: " + inputShape.ObjectHeight + ")");
+                ScreenBanner("LABEL SELECTION: " + inputShape.ShapeName + " (Height: " + inputShape.ObjectHeight + " | Width: " + inputShape.ObjectWidth + ")");
                 Console.WriteLine();
 
                 //logic to redirect user after different types of incorrect input
@@ -1017,7 +1019,7 @@ namespace ASCIIShapes
                 else if (errorCode == 3)
                 {
                     Console.WriteLine("Current shape is not large enough to accept a label.");
-                    Console.WriteLine("All labels must be attached fully within the perimeter of the shape.");
+                    Console.WriteLine("All labels must be attached fully within the left and right perimeter of the shape.");
                     Console.WriteLine("Press any key to draw the shape with no label...");
                     Console.ReadKey();
                     Console.Clear();
@@ -1032,7 +1034,7 @@ namespace ASCIIShapes
                 else if (errorCode == 4)
                 {
                     Console.WriteLine("Current shape is not large enough to accept the default label (\"LU\").");
-                    Console.WriteLine("All labels must be attached fully within the perimeter of the shape.");
+                    Console.WriteLine("All labels must be attached fully within the left and right perimeter of the shape.");
                     Console.WriteLine("Press any key to draw the shape with no label...");
                     Console.ReadKey();
                     Console.Clear();
@@ -1089,6 +1091,7 @@ namespace ASCIIShapes
                         continue;
                     case "M":
                         continueLabelSubmenu = false;
+                        continueShapeSubmenu = false;
                         continueHeightSubmenu = false;
                         continue;
                     case "X":
